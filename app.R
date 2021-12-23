@@ -6,11 +6,11 @@ source("get_nyt_articles.R")
 
 shinyApp(
   ui = fluidPage(
-    titlePanel("NYTimes API"),
+    titlePanel("NYTimes API: View front page stories"),
     sidebarLayout(
       sidebarPanel(
         # set day
-        dateInput("dateid", "Please select the date:", value = "2017-04-24",
+        dateInput("dateid", "Please select the date:",
                   min = "1800-01-01", max = "9999-12-31",),
         
         # API key
@@ -45,6 +45,7 @@ shinyApp(
     
     # retrieve API data
     news = eventReactive(input$check, {
+      validate(need(length(input$dateid) != 0, "The date is not complete."))
       year = stringr::str_split(input$dateid, "-")[[1]][1]
       month = stringr::str_split(input$dateid, "-")[[1]][2]
       day = stringr::str_split(input$dateid, "-")[[1]][3]
